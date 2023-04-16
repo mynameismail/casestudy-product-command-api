@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 
 class CategoryController extends Controller
@@ -30,7 +31,6 @@ class CategoryController extends Controller
 
         $validated = $validator->validated();
 
-        $id = Str::uuid();
         $name = $validated['name'];
         $createdAt = time();
 
@@ -40,11 +40,7 @@ class CategoryController extends Controller
         $category->save();
 
         return response()->json([
-            'data' => [
-                'id' => $category->id,
-                'name' => $name,
-                'createdAt' => $createdAt,
-            ],
+            'data' => new CategoryResource($category),
         ]);
     }
 }
