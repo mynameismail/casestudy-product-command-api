@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Middleware\VerifyApiKey;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,5 @@ use App\Http\Controllers\CategoryController;
 
 Route::middleware(VerifyApiKey::class)->group(function () {
     Route::post('/categories', [CategoryController::class, 'add']);
+    Route::post('/products', [ProductController::class, 'add']);
 });
