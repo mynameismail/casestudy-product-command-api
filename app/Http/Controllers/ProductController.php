@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -55,18 +56,7 @@ class ProductController extends Controller
         $product->save();
 
         return response()->json([
-            'data' => [
-                'id' => $product->id,
-                'sku' => $sku,
-                'name' => $name,
-                'price' => $price,
-                'stock' => $stock,
-                'category' => [
-                    'id' => $categoryId,
-                    'name' => $product->category->name,
-                ],
-                'createdAt' => $createdAt,
-            ],
+            'data' => new ProductResource($product),
         ]);
     }
 }
