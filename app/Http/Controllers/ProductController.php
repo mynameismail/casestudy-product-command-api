@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ProductService;
 use App\Services\RabbitMQService;
 
 class ProductController extends Controller
@@ -40,21 +41,7 @@ class ProductController extends Controller
 
         $validated = $validator->validated();
 
-        $sku = $validated['sku'];
-        $name = $validated['name'];
-        $price = $validated['price'];
-        $stock = $validated['stock'];
-        $categoryId = $validated['categoryId'];
-        $createdAt = time();
-
-        $product = new Product;
-        $product->sku = $sku;
-        $product->name = $name;
-        $product->price = $price;
-        $product->stock = $stock;
-        $product->category_id = $categoryId;
-        $product->created_at = $createdAt;
-        $product->save();
+        $product = (new ProductService())->add($validated);
 
         (new RabbitMQService())->publish('add_product', json_encode($product));
 
