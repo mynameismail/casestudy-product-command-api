@@ -39,6 +39,6 @@ class CategoryController extends Controller
 
         return response()->json([
             'data' => new CategoryResource($category),
-        ]);
+        ], 201);
     }
 }
