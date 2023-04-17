@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\RabbitMQService;
 
 class ProductController extends Controller
 {
@@ -54,6 +55,8 @@ class ProductController extends Controller
         $product->category_id = $categoryId;
         $product->created_at = $createdAt;
         $product->save();
+
+        (new RabbitMQService())->publish('add_product', json_encode($product));
 
         return response()->json([
             'data' => new ProductResource($product),

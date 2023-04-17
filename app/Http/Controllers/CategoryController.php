@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Services\RabbitMQService;
 
 class CategoryController extends Controller
 {
@@ -38,6 +39,8 @@ class CategoryController extends Controller
         $category->name = $name;
         $category->created_at = $createdAt;
         $category->save();
+
+        (new RabbitMQService())->publish('add_category', json_encode($category));
 
         return response()->json([
             'data' => new CategoryResource($category),
