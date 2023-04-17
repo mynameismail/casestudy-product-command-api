@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Services\CategoryService;
 use App\Services\RabbitMQService;
 
 class CategoryController extends Controller
@@ -32,13 +33,7 @@ class CategoryController extends Controller
 
         $validated = $validator->validated();
 
-        $name = $validated['name'];
-        $createdAt = time();
-
-        $category = new Category;
-        $category->name = $name;
-        $category->created_at = $createdAt;
-        $category->save();
+        $category = (new CategoryService())->add($validated);
 
         (new RabbitMQService())->publish('add_category', json_encode($category));
 
