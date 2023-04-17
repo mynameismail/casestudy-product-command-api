@@ -40,15 +40,4 @@ class VerifyApiKeyMiddlewareTest extends TestCase
 
         $this->assertEquals($response->getStatusCode(), 401);
     }
-
-    /**
-     * Test unauthorized
-     */
-    // public function test_unauthorized(): void
-    // {
-    //     $response = $this->withHeaders([
-    //         'API-KEY' => 'qwerty',
-    //     ])->json('POST', '/api/categories');
-    //     $response->assertStatus(401);
-    // }
 }
