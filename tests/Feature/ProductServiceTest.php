@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Category;
+use App\Models\Product;
 use App\Services\ProductService;
 
 class ProductServiceTest extends TestCase
@@ -14,7 +15,7 @@ class ProductServiceTest extends TestCase
     /**
      * Test add product, it should persist add product and return product object correctly
      */
-    public function test_add(): void
+    public function testAdd(): void
     {
         $category = Category::factory()->create();
 
@@ -35,5 +36,8 @@ class ProductServiceTest extends TestCase
         $this->assertEquals($product->stock, $payload['stock']);
         $this->assertEquals($product->category_id, $payload['categoryId']);
         $this->assertNotEmpty($product->created_at);
+
+        $count = Product::where('id', $product->id)->count();
+        $this->assertEquals($count, 1);
     }
 }

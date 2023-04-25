@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\Category;
 use App\Services\CategoryService;
 
 class CategoryServiceTest extends TestCase
@@ -12,7 +13,7 @@ class CategoryServiceTest extends TestCase
     /**
      * Test add category, it should persist add category and return category object correctly
      */
-    public function test_add(): void
+    public function testAdd(): void
     {
         $payload = [
             'name' => 'test category',
@@ -23,5 +24,8 @@ class CategoryServiceTest extends TestCase
         $this->assertNotEmpty($category->id);
         $this->assertEquals($category->name, $payload['name']);
         $this->assertNotEmpty($category->created_at);
+
+        $count = Category::where('id', $category->id)->count();
+        $this->assertEquals($count, 1);
     }
 }
