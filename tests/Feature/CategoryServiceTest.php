@@ -10,6 +10,7 @@ use App\Services\CategoryService;
 class CategoryServiceTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * Test add category, it should persist add category and return category object correctly
      */
@@ -20,12 +21,11 @@ class CategoryServiceTest extends TestCase
         ];
 
         $category = (new CategoryService())->add($payload);
+        $count = Category::where('id', $category->id)->count();
 
         $this->assertNotEmpty($category->id);
         $this->assertEquals($category->name, $payload['name']);
         $this->assertNotEmpty($category->created_at);
-
-        $count = Category::where('id', $category->id)->count();
         $this->assertEquals($count, 1);
     }
 }

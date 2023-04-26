@@ -28,6 +28,7 @@ class ProductServiceTest extends TestCase
         ];
         
         $product = (new ProductService())->add($payload);
+        $count = Product::where('id', $product->id)->count();
 
         $this->assertNotEmpty($product->id);
         $this->assertEquals($product->sku, $payload['sku']);
@@ -36,8 +37,6 @@ class ProductServiceTest extends TestCase
         $this->assertEquals($product->stock, $payload['stock']);
         $this->assertEquals($product->category_id, $payload['categoryId']);
         $this->assertNotEmpty($product->created_at);
-
-        $count = Product::where('id', $product->id)->count();
         $this->assertEquals($count, 1);
     }
 }
